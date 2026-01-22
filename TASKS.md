@@ -7,9 +7,9 @@
 - [x] Implement 3 medium priority rules
 - [x] Include code examples for all rules
 
-## Phase 2: Universal Patterns (Week 2) - IN PROGRESS
+## Phase 2: Universal Patterns (Week 2) - ✅ COMPLETE
 - [x] Adapt error-handling from Go skill (7 rules)
-- [ ] Adapt design-patterns from Go skill (13 rules)
+- [x] Adapt design-patterns from Go skill (13 rules)
 
 ## Phase 3: Async & Architecture (Week 3) - NOT STARTED
 - [ ] Create async-patterns (10 new rules)

@@ -11,8 +11,8 @@
 - [x] Adapt error-handling from Go skill (7 rules)
 - [x] Adapt design-patterns from Go skill (13 rules)
 
-## Phase 3: Async & Architecture (Week 3) - NOT STARTED
-- [ ] Create async-patterns (10 new rules)
+## Phase 3: Async & Architecture (Week 3) - IN PROGRESS
+- [x] Create async-patterns (10 new rules)
 - [ ] Adapt clean-architecture from Go skill (10 rules)
 
 ## Phase 4: Documentation & Release (Week 4) - NOT STARTED

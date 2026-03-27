@@ -1,12 +1,11 @@
 ---
-name: error-handling
-description: TypeScript/JavaScript error handling best practices. Ensures proper error propagation, typed errors, and async error handling.
-priority: critical
-rule_count: 7
-sources:
-  - "You Don't Know JS - Async & Performance (Kyle Simpson)"
-  - "Node.js Best Practices (goldbergyoni)"
-  - "Effective TypeScript (Dan Vanderkam)"
+name: handling-errors
+description: Manages TypeScript/JavaScript error handling best practices. Use to ensure proper error propagation, typed errors, and async error handling.
+metadata:
+  sources:
+    - "You Don't Know JS - Async & Performance (Kyle Simpson)"
+    - "Node.js Best Practices (goldbergyoni)"
+    - "Effective TypeScript (Dan Vanderkam)"
 ---
 
 # Error Handling - TypeScript Best Practices

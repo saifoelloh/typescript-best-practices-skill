@@ -1,67 +1,17 @@
----
-name: design-patterns
-description: TypeScript refactoring patterns and code smell detection. Based on Martin Fowler's refactoring catalog - language-agnostic patterns adapted for TypeScript/JavaScript.
-priority: medium-high
-rule_count: 13
-sources:
-  - "Refactoring: Improving the Design of Existing Code (Martin Fowler)"
-  - "Clean Code (Robert C. Martin)"
-  - "Refactoring.Guru"
----
+# Design Patterns & Refactoring Rules
 
-# Design Patterns & Refactoring - TypeScript Best Practices
-
-Detect code smells and apply proven refactoring patterns to improve maintainability.
-
-## When to Use
-
-- Refactoring complex or legacy code
-- Reducing technical debt
-- Simplifying large functions
-- Improving code readability
-- Extracting reusable patterns
-
-**Trigger Phrases:**
-- "Refactor this code"
-- "Find code smells"
-- "Reduce complexity"
-- "Improve maintainability"
-
-## Rules Overview
-
-### High Priority (2 rules)
-Critical refactoring needs:
-
-1. **high-god-object** - Extract logic from 300+ line functions
-2. **high-extract-method** - Name complex code blocks with descriptive methods
-
-### Medium Priority (11 rules)
-Code quality improvements:
-
-3. **medium-primitive-obsession** - Replace primitives with value objects
-4. **medium-long-parameter-list** - Use parameter objects for >5 params
-5. **medium-data-clumps** - Extract repeated parameter groups  
-6. **medium-feature-envy** - Move logic closer to data
-7. **medium-magic-constants** - Replace magic numbers with named constants
-8. **medium-builder-pattern** - Fluent API for complex construction
-9. **medium-factory-constructor** - Validated object creation
-10. **medium-introduce-parameter-object** - Group related parameters
-11. **medium-switch-to-strategy** - Replace type switches with polymorphism
-12. **medium-callback-hell** - Replace nested callbacks with async/await
-13. **medium-law-of-demeter** - Reduce coupling, avoid message chains
+Detailed guidance for the 14 core rules in the Design Patterns skill.
 
 ---
 
-## Rule Details
-
-### 1. high-god-object
+## 1. high-god-object
 
 **Why it matters:** Functions over 300 lines are hard to understand, test, and maintain.
 
 **Detection:**
-- Count lines in functions
-- Look for multiple responsibilities
-- Check for many local variables
+- Use `scripts/god_object_check.js` to automatically count lines.
+- Look for multiple responsibilities.
+- Check for many local variables.
 
 **❌ Incorrect:**
 ```typescript
@@ -107,14 +57,14 @@ class OrderProcessor {
 
 ---
 
-### 2. high-extract-method
+## 2. high-extract-method
 
 **Why it matters:** Named methods document intent and improve code comprehension.
 
 **Detection:**
-- Look for comments explaining code blocks
-- Check for complex expressions
-- Search for multi-line if/loop bodies
+- Look for comments explaining code blocks.
+- Check for complex expressions.
+- Search for multi-line if/loop bodies.
 
 **❌ Incorrect:**
 ```typescript
@@ -163,7 +113,7 @@ function determineUserTier(totalSpent: number): string {
 
 ---
 
-### 3. medium-primitive-obsession
+## 3. medium-primitive-obsession
 
 **Why it matters:** Primitives lack validation and business rules.
 
@@ -222,7 +172,7 @@ function subscribeUser(email: Email) {
 
 ---
 
-### 4. medium-long-parameter-list
+## 4. medium-long-parameter-list
 
 **Why it matters:** Functions with >5 parameters are hard to call and understand.
 
@@ -287,7 +237,7 @@ createUser({
 
 ---
 
-### 5. medium-data-clumps
+## 5. medium-data-clumps
 
 **Why it matters:** Parameters that always appear together suggest a missing abstraction.
 
@@ -323,7 +273,7 @@ function validatePackage(dimensions: PackageDimensions) {}
 
 ---
 
-### 6. medium-feature-envy
+## 6. medium-feature-envy
 
 **Why it matters:** Methods that primarily use data from another class should move there.
 
@@ -368,7 +318,7 @@ class OrderReport {
 
 ---
 
-### 7. medium-magic-constants
+## 7. medium-magic-constants
 
 **Why it matters:** Unnamed numbers lack context and are hard to change.
 
@@ -414,7 +364,7 @@ function calculateDiscount(total: number, userType: string) {
 
 ---
 
-### 8. medium-builder-pattern
+## 8. medium-builder-pattern
 
 **Why it matters:** Complex object construction with many optional fields benefits from fluent API.
 
@@ -481,7 +431,7 @@ const request = new HttpRequestBuilder()
 
 ---
 
-### 9. medium-factory-constructor
+## 9. medium-factory-constructor
 
 **Why it matters:** Factory methods enable validation and polymorphic construction.
 
@@ -539,7 +489,7 @@ if (userResult instanceof Error) {
 
 ---
 
-### 10. medium-introduce-parameter-object
+## 10. medium-introduce-parameter-object
 
 **Why it matters:** Related parameters suggest a cohesive concept.
 
@@ -579,7 +529,7 @@ function scheduleTask(name: string, time: ScheduleTime) {
 
 ---
 
-### 11. medium-switch-to-strategy
+## 11. medium-switch-to-strategy
 
 **Why it matters:** Type switches are hard to extend and violate Open/Closed Principle.
 
@@ -595,7 +545,7 @@ function calculateArea(shape: Shape) {
     case 'circle':
       return Math.PI * shape.radius ** 2;
     case 'square':
-      return shape.side ** 2;
+      return shape.size ** 2;
     case 'rectangle':
       return shape.width * shape.height;
     default:
@@ -635,7 +585,7 @@ function calculateArea(shape: Shape) {
 
 ---
 
-### 12. medium-callback-hell
+## 12. medium-callback-hell
 
 **Why it matters:** Nested callbacks are hard to read and error-prone.
 
@@ -676,7 +626,7 @@ async function loadUserData(userId: string) {
 
 ---
 
-### 13. medium-law-of-demeter
+## 13. medium-law-of-demeter
 
 **Why it matters:** Chained calls create tight coupling and fragile code.
 
@@ -690,8 +640,6 @@ async function loadUserData(userId: string) {
 function getStreetName(user: User): string {
   return user.profile.address.street.name; // Chain of 4!
 }
-
-// Breaks if any intermediate is null/undefined
 ```
 
 **✅ Correct:**
@@ -725,29 +673,20 @@ function getStreetName(user: User): string | undefined {
 
 ---
 
-## Usage Examples
+## 14. high-gof-patterns
 
-**Refactor complex function:**
-```
-Find code smells in this function and suggest refactoring
-```
+**Why it matters:** Classic patterns provide standardized, robust solutions to complex design challenges.
 
-**Review for maintainability:**
-```
-Check this code for design pattern improvements
-```
+**Detection:**
+- Search for repetitive structural boiling plate.
+- Look for complex state management logic.
 
-**Simplify legacy code:**
-```
-Reduce complexity in this module
-```
+**Guidelines:**
+Refer to the [Comprehensive GoF Patterns Catalog](./GOF_PATTERNS.md) for detailed descriptions, code examples, and detection criteria for all 23 patterns:
+- **Creational**: Abstract Factory, Builder, Factory Method, Prototype, Singleton.
+- **Structural**: Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy.
+- **Behavioral**: Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor.
 
-## Summary
+**Impact:** HIGH - Standardizes architecture and simplifies communication.
 
-Design patterns and refactoring improve:
-- ✅ Code readability (Extract Method, Named Concepts)
-- ✅ Maintainability (Single Responsibility)
-- ✅ Extensibility (Strategy Pattern, Builder)
-- ✅ Testability (Smaller Functions, Clear Dependencies)
-
-Apply patterns when they simplify code, not dogmatically.
+**Reference:** Design Patterns (Gang of Four)

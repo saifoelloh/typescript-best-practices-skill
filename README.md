@@ -6,19 +6,17 @@ A comprehensive TypeScript/JavaScript code review skill based on authoritative s
 
 🚧 **Under Development** - v0.1.0
 
-## Planned Structure
+## Repository Structure
 
-```
+```text
 typescript-best-practices-skill/
-├── SKILL.md                    # Meta-skill coordinator
-├── type-safety/                # TypeScript idioms & type system
-├── async-patterns/             # Promises, async/await, error handling
-├── error-handling/             # Error patterns & best practices
-├── clean-architecture/         # Clean Architecture adapted for TS
-├── design-patterns/            # Refactoring & code smells
-├── graphql-best-practices/     # GraphQL resolver patterns
-├── node-security/              # OWASP & Node.js security
-└── performance/                # Node.js optimization patterns
+├── ensuring-type-safety/        # TypeScript type system best practices
+├── handling-async/              # Promises, async/await, concurrency
+├── handling-errors/             # Error propagation & custom types
+└── applying-design-patterns/    # Code smells, refactoring & GoF patterns
+    ├── SKILL.md                 # Core orchestration
+    ├── references/              # Modular documentation
+    └── scripts/                 # Automated detection scripts
 ```
 
 ## Authoritative Sources

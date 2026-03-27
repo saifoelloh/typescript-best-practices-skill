@@ -107,4 +107,4 @@ export const NotificationFactory = {
 
 - [GoF Patterns Detailed Mapping](./references/GOF_PATTERNS.md)
 - [General Refactoring Rules](./references/RULES.md)
-- [Smell Detection Script](./scripts/detect-strategy-smell.ts)
+- [Smell Detection Script](./scripts/detect-strategy-smell.js)

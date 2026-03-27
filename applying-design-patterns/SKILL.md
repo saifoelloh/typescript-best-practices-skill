@@ -1,105 +1,110 @@
 ---
 name: applying-design-patterns
-description: Analyzes TypeScript code for smells and suggests refactoring patterns. Use when refactoring complex code, reducing technical debt, or improving maintainability.
+description: Guides the application of Gang of Four (GoF) design patterns in TypeScript. Focuses on identifying "code smells" and refactoring to patterns that improve extensibility and maintainability.
 metadata:
   sources:
-    - "Design Patterns: Elements of Reusable Object-Oriented Software (Gamma et al.)"
+    - "Design Patterns: Elements of Reusable Object-Oriented Software (GoF)"
+    - "Effective TypeScript (Dan Vanderkam)"
     - "Refactoring: Improving the Design of Existing Code (Martin Fowler)"
-    - "Clean Code (Robert C. Martin)"
-    - "Refactoring.Guru"
 ---
 
-# Design Patterns & Refactoring - TypeScript Best Practices
+# Design Patterns - TypeScript Best Practices
 
-Detect code smells and apply proven refactoring patterns to improve maintainability.
+This skill provides rules for identifying when to apply specific design patterns to solve common structural and behavioral challenges in modern TypeScript applications.
 
-## When to Use
+## 1. high-strategy-pattern-refactor
 
-- Refactoring complex or legacy code
-- Reducing technical debt
-- Simplifying large functions
-- Improving code readability
-- Extracting reusable patterns
+**Why it matters:** Extensive `switch` or `if/else` chains for varying behavior make code fragile and violate the Open/Closed Principle. Adding a new behavior requires modifying the existing logic.
 
-**Trigger Phrases:**
-- "Refactor this code"
-- "Find code smells"
-- "Reduce complexity"
-- "Improve maintainability"
+**Detection (Code Smell):**
+- A method contains a `switch(type)` or `if(type === 'A') ... else if(type === 'B')` that implements different algorithms.
 
-## Rules Overview
+**❌ Incorrect (Switch Smell):**
+```typescript
+function calculateShipping(type: string, weight: number): number {
+  switch (type) {
+    case 'EXPRESS': return weight * 10;
+    case 'STANDARD': return weight * 5;
+    case 'FREE': return 0;
+    default: throw new Error('Unknown type');
+  }
+}
+```
 
-### High Priority (2 rules)
-Critical refactoring needs:
+**✅ Correct (Strategy Pattern):**
+```typescript
+interface ShippingStrategy {
+  calculate(weight: number): number;
+}
 
-1. **high-god-object** - Extract logic from 300+ line functions
-2. **high-extract-method** - Name complex code blocks with descriptive methods
+const strategies: Record<string, ShippingStrategy> = {
+  EXPRESS: { calculate: (w) => w * 10 },
+  STANDARD: { calculate: (w) => w * 5 },
+  FREE: { calculate: () => 0 }
+};
 
-### Medium Priority (11 rules)
-Code quality improvements:
-
-3. **medium-primitive-obsession** - Replace primitives with value objects
-4. **medium-long-parameter-list** - Use parameter objects for >5 params
-5. **medium-data-clumps** - Extract repeated parameter groups  
-6. **medium-feature-envy** - Move logic closer to data
-7. **medium-magic-constants** - Replace magic numbers with named constants
-8. **medium-builder-pattern** - Fluent API for complex construction
-9. **medium-factory-constructor** - Validated object creation
-10. **medium-introduce-parameter-object** - Group related parameters
-11. **medium-switch-to-strategy** - Replace type switches with polymorphism
-12. **medium-callback-hell** - Replace nested callbacks with async/await
-13. **medium-law-of-demeter** - Reduce coupling, avoid message chains
-14. **high-gof-patterns** - Apply one of the 23 classic Gang of Four patterns
-
----
-
-## Rule Details
-
-Detailed guidance for each rule is available in the [Refactoring Rules guide](./references/rules.md):
-
-1.  **high-god-object**: Extract logic from 300+ line functions.
-2.  **high-extract-method**: Name complex code blocks.
-3.  **medium-primitive-obsession**: Replace primitives with value objects.
-4.  **medium-long-parameter-list**: Use parameter objects for >5 params.
-5.  **medium-data-clumps**: Extract repeated parameter groups.
-6.  **medium-feature-envy**: Move logic closer to data.
-7.  **medium-magic-constants**: Replace magic numbers.
-8.  **medium-builder-pattern**: Fluent API for complex construction.
-9.  **medium-factory-constructor**: Validated object creation.
-10. **medium-introduce-parameter-object**: Group related parameters.
-11. **medium-switch-to-strategy**: Replace type switches with polymorphism.
-12. **medium-callback-hell**: Replace nested callbacks.
-13. **medium-law-of-demeter**: Reduce coupling.
-14. **high-gof-patterns**: Apply one of the 23 classic [Gang of Four patterns](./references/GOF_PATTERNS.md).
-
-> [!TIP]
-> Use `scripts/god_object_check.js` to automatically detect high-line-count functions.
+function calculateShipping(type: string, weight: number): number {
+  const strategy = strategies[type];
+  if (!strategy) throw new Error('Unknown type');
+  return strategy.calculate(weight);
+}
+```
 
 ---
 
-## Usage Examples
+## 2. high-factory-method-instantiation
 
-**Refactor complex function:**
-```
-Find code smells in this function and suggest refactoring
+**Why it matters:** Direct instantiation (`new ConcreteClass()`) couples the client to the specific implementation, making testing and future changes difficult.
+
+**✅ Correct:**
+- Use a Factory function or class to centralize object creation, especially when the type of object is determined at runtime.
+
+```typescript
+type NotificationType = 'EMAIL' | 'SMS';
+
+interface NotificationProvider {
+  send(message: string): void;
+}
+
+export const NotificationFactory = {
+  create(type: NotificationType): NotificationProvider {
+    if (type === 'EMAIL') return new EmailProvider();
+    return new SmsProvider();
+  }
+};
 ```
 
-**Review for maintainability:**
-```
-Check this code for design pattern improvements
-```
+---
 
-**Simplify legacy code:**
-```
-Reduce complexity in this module
-```
+## 3. medium-observer-decoupling
 
-## Summary
+**Why it matters:** Tight coupling between components where one must notify others of changes leads to "Shotgun Surgery" (one change requiring many small changes elsewhere).
 
-Design patterns and refactoring improve:
-- ✅ Code readability (Extract Method, Named Concepts)
-- ✅ Maintainability (Single Responsibility)
-- ✅ Extensibility (Strategy Pattern, Builder)
-- ✅ Testability (Smaller Functions, Clear Dependencies)
+**✅ Correct:**
+- Use the Observer pattern (or EventEmitter in Node.js) to allow components to react to events without knowing about each other.
 
-Apply patterns when they simplify code, not dogmatically.
+---
+
+## 4. high-decorator-behavior-extension
+
+**Why it matters:** Inheritance often leads to "Class Explosion" when trying to combine multiple independent behaviors.
+
+**✅ Correct:**
+- Use the Decorator pattern to wrap objects and add behavior dynamically. In TypeScript, leverage **Decorators** (standard or experimental) for elegant cross-cutting concerns (logging, validation).
+
+---
+
+## 5. medium-proxy-intercept
+
+**Why it matters:** Adding cross-cutting concerns like logging, caching, or access control directly into business logic violates the Single Responsibility Principle.
+
+**✅ Correct:**
+- Use the Proxy pattern (or native ES6 `Proxy`) to intercept and augment behavior without modifying the original object.
+
+---
+
+## References & Tools
+
+- [GoF Patterns Detailed Mapping](./references/GOF_PATTERNS.md)
+- [General Refactoring Rules](./references/RULES.md)
+- [Smell Detection Script](./scripts/detect-strategy-smell.ts)

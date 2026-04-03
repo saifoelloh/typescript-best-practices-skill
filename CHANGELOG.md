@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Test suite**: Node.js built-in `node:test` with pass/fail fixtures for all detectors.
 - **TRACEABILITY.md**: Complete rule-to-detector mapping with false positive/negative documentation.
 - **LICENSE**: MIT license file (was claimed but missing).
-- **CI workflow**: GitHub Actions for automated testing.
 
 ### Changed
 - **All detectors upgraded**: Every script now recursively scans directories, emits findings with file path and line number, uses consistent `[RULE_ID][SEVERITY]` output format, and returns non-zero exit code on violations.

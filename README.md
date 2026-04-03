@@ -6,11 +6,11 @@ A modular TypeScript/JavaScript code review toolkit with heuristic smell detecto
 
 🧪 **Beta** — `v1.1.0-beta`
 
-Detectors are **heuristic-based** (regex + AST via ts-morph). They catch common smells with reasonable accuracy but are not equivalent to full ESLint rule coverage. See [TRACEABILITY.md](./TRACEABILITY.md) for per-rule detection status and known limitations.
+Detectors are **heuristic-based** (regex + AST via ts-morph). They catch common smells with reasonable accuracy but are not equivalent to full ESLint rule coverage. See [TRACEABILITY.md](./references/TRACEABILITY.md) for per-rule detection status and known limitations.
 
 ## Requirements
 
-- **Node.js** ≥ 22 (Node 20 is the minimum supported floor; see `engines` in package.json)
+- **Node.js** ≥ 20.0.0 (Node 22+ recommended)
 - **npm** ≥ 9
 
 ## Quickstart
@@ -19,10 +19,14 @@ Detectors are **heuristic-based** (regex + AST via ts-morph). They catch common 
 # Install dependencies
 npm install
 
-# Run all detectors against a target project
-npm run check:all -- /path/to/your/project
+# Run all detectors against the current directory
+npm run check:all
 
-# Run a specific detector
+# Note: `check:all` is intended for current-project scans.
+# Custom target paths should be passed to individual detectors below
+# unless the script orchestration is refactored in a future enhancement.
+
+# Run a specific detector against a target project
 npm run check:architecture -- /path/to/your/project
 npm run check:type-safety -- /path/to/your/project
 npm run check:async -- /path/to/your/project
@@ -86,10 +90,11 @@ typescript-best-practices-skill/
 ├── lib/                           # Shared utilities
 │   ├── scanner.js
 │   └── reporter.js
+├── references/                    # Shared reference files
+│   └── TRACEABILITY.md            # Rule → detector mapping
 ├── tests/                         # Detector tests & fixtures
 │   ├── fixtures/
 │   └── *.test.js
-├── TRACEABILITY.md                # Rule → detector mapping
 ├── CHANGELOG.md
 ├── LICENSE
 ├── package.json
@@ -128,7 +133,7 @@ When adding a new rule:
 - Add the rule to the appropriate `SKILL.md` and `references/RULES.md`
 - If the rule is detectable, add or update the corresponding detector in `scripts/`
 - Add test fixtures in `tests/fixtures/pass/` and `tests/fixtures/fail/`
-- Update [TRACEABILITY.md](./TRACEABILITY.md) with the new rule entry
+- Update [TRACEABILITY.md](./references/TRACEABILITY.md) with the new rule entry
 
 ## Author
 

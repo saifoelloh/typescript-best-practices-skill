@@ -16,8 +16,11 @@ This skill provides rules for identifying when to apply specific design patterns
 
 **Why it matters:** Extensive `switch` or `if/else` chains for varying behavior make code fragile and violate the Open/Closed Principle. Adding a new behavior requires modifying the existing logic.
 
-**Detection (Code Smell):**
-- A method contains a `switch(type)` or `if(type === 'A') ... else if(type === 'B')` that implements different algorithms.
+**Detection (Code Smell — Heuristic):**
+- A method contains a `switch(type)` with ≥ 5 cases implementing different algorithms
+- Long `if/else-if` chains (≥ 4 branches) comparing the same discriminant
+
+**Not every switch is a smell.** Legitimate uses include reducers, parser token handling, and simple data mappings (2-3 cases).
 
 **❌ Incorrect (Switch Smell):**
 ```typescript
@@ -90,7 +93,34 @@ export const NotificationFactory = {
 **Why it matters:** Inheritance often leads to "Class Explosion" when trying to combine multiple independent behaviors.
 
 **✅ Correct:**
-- Use the Decorator pattern to wrap objects and add behavior dynamically. In TypeScript, leverage **Decorators** (standard or experimental) for elegant cross-cutting concerns (logging, validation).
+- Use the Decorator pattern to wrap objects and add behavior dynamically.
+
+**TypeScript Decorators — Two Standards:**
+
+| Feature | TC39 Standard (TS 5.0+) | Legacy Experimental |
+|---------|------------------------|---------------------|
+| tsconfig flag | None needed | `"experimentalDecorators": true` |
+| Metadata | No `reflect-metadata` | Requires `reflect-metadata` |
+| Syntax | Same `@decorator` | Same `@decorator` |
+| Parameter decorators | ❌ Not supported | ✅ Supported |
+| Runtime behavior | Different from legacy | Different from standard |
+
+**⚠️ Warning:** Standard and legacy decorators are **not interchangeable**. A codebase should use one or the other, not both. Libraries like NestJS and TypeORM currently require legacy experimental decorators. Check your framework's documentation.
+
+```typescript
+// TC39 Standard Decorator (TS 5.0+, no flag needed)
+function logged(target: any, context: ClassMethodDecoratorContext) {
+  return function (...args: any[]) {
+    console.log(`Calling ${String(context.name)}`);
+    return target.apply(this, args);
+  };
+}
+
+class UserService {
+  @logged
+  getUser(id: string) { /* ... */ }
+}
+```
 
 ---
 
@@ -105,6 +135,7 @@ export const NotificationFactory = {
 
 ## References & Tools
 
-- [GoF Patterns Detailed Mapping](./references/GOF_PATTERNS.md)
+- [GoF Patterns Mapping (all 23 patterns)](./references/GOF_PATTERNS.md)
 - [General Refactoring Rules](./references/RULES.md)
-- [Smell Detection Script](./scripts/detect-strategy-smell.js)
+- [Strategy Smell Detector](./scripts/detect-strategy-smell.js) _(heuristic)_
+- [God Object Detector](./scripts/god_object_check.js) _(hybrid: AST + heuristic)_

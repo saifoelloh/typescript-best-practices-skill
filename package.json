@@ -1,0 +1,37 @@
+{
+  "name": "typescript-best-practices-skill",
+  "version": "1.1.0-beta",
+  "description": "Modular TypeScript/JavaScript code review toolkit with heuristic smell detectors and curated best-practice documentation.",
+  "author": "saifoelloh <saifoelloh@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saifoelloh/typescript-best-practices-skill"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "check:architecture": "node applying-clean-architecture/scripts/layer_violation_check.js",
+    "check:type-safety": "node ensuring-type-safety/scripts/strict_mode_check.js",
+    "check:async": "node handling-async/scripts/async_smell_check.js",
+    "check:errors": "node handling-errors/scripts/error_smell_check.js",
+    "check:design-patterns": "node applying-design-patterns/scripts/detect-strategy-smell.js && node applying-design-patterns/scripts/god_object_check.js",
+    "check:all": "npm run check:architecture && npm run check:type-safety && npm run check:async && npm run check:errors && npm run check:design-patterns",
+    "test": "node --test 'tests/**/*.test.js'"
+  },
+  "dependencies": {
+    "ts-morph": "^24.0.0"
+  },
+  "keywords": [
+    "typescript",
+    "best-practices",
+    "code-review",
+    "linting",
+    "clean-architecture",
+    "design-patterns",
+    "type-safety"
+  ]
+}

@@ -1,0 +1,1 @@
+applying-design-patterns/references/GOF_PATTERNS.md

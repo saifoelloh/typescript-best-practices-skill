@@ -30,30 +30,30 @@ Master async/await, promises, and concurrent operations to build reliable async 
 
 Detailed guidance for these rules is available in [RULES.md](./references/RULES.md).
 
-### Critical (3 rules)
-1. **critical-promise-not-awaited** - Always await promises or handle with `.then()`
-2. **critical-async-without-await** - `async` functions must use `await`
-3. **critical-promise-constructor-anti** - Avoid `new Promise()` when unnecessary
+### Critical (2 rules)
+1. **critical-promise-not-awaited** — Always await promises or handle with `.then()`. Floating promises cause silent failures.
+2. **critical-promise-constructor-anti** — Avoid `new Promise()` wrapping existing async operations.
 
-### High Priority (4 rules)
-4. **high-parallel-sequential-confusion** - Use `Promise.all()` for parallel operations
-5. **high-promise-race-timeout** - Implement timeouts with `Promise.race()`
-6. **high-async-forEach** - Don't use `forEach()` with async functions
-7. **high-promise-chaining** - Prefer async/await over `.then()` chains
+### High Priority (5 rules)
+3. **high-async-without-await** — An `async` function with no `await` is usually unnecessary overhead. _(Heuristic: interface conformance or returning a pre-existing promise may justify it.)_
+4. **high-parallel-sequential-confusion** — Use `Promise.all()` for independent parallel operations.
+5. **high-promise-timeout** — Implement timeouts to prevent hanging operations. Use `AbortController` / `AbortSignal.timeout()` for fetch-like APIs, or `Promise.race()` for generic orchestration.
+6. **high-async-forEach** — Don't use `forEach()` with async callbacks — promises are silently dropped.
+7. **high-promise-chaining** — Prefer async/await over long `.then()` chains for readability.
 
 ### Medium Priority (3 rules)
-8. **medium-concurrent-limit** - Limit concurrent operations with pooling
-9. **medium-promise-allsettled** - Use `Promise.allSettled()` for fault tolerance
-10. **medium-async-iife** - Use top-level await or async IIFE correctly
+8. **medium-concurrent-limit** — Limit concurrent operations with pooling to prevent resource exhaustion.
+9. **medium-promise-allsettled** — Use `Promise.allSettled()` when partial failures are acceptable.
+10. **medium-async-iife** — Use top-level await (ES2022+) or async IIFE with proper error handling.
 
 ---
 
 ## Summary
 
 Async patterns ensure:
-- ✅ All promises awaited or handled
+- ✅ All promises awaited or explicitly handled
 - ✅ Parallel execution where possible
-- ✅ Timeouts prevent hanging
+- ✅ Timeouts via AbortController or Promise.race()
 - ✅ Proper forEach alternatives
 - ✅ Fault-tolerant concurrent operations
 - ✅ Readable async/await over chains
